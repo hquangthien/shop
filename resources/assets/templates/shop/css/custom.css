@@ -1,0 +1,158 @@
+.wrap-suggestion {
+    display: block;
+    border: 1px solid #e2e2e2;
+    background: #fff;
+    position: absolute;
+    left: 0;
+    width: 500px;
+    top: 5px;
+    z-index: 9;
+    border-radius: 8px;
+    padding: 10px;
+}
+.wrap-suggestion:before {
+    border-color: rgba(218,218,218,0);
+    border-bottom-color: #dadada;
+    border-width: 9px;
+    margin-left: -9px;
+}
+
+.wrap-suggestion:after, .wrap-suggestion:before {
+    bottom: 100%;
+    left: 80px;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+}
+.wrap-suggestion:after {
+    border-color: rgba(255,255,255,0);
+    border-bottom-color: #fff;
+    border-width: 8px;
+    margin-left: -8px;
+}
+.wrap-suggestion:after, .wrap-suggestion:before {
+    bottom: 100%;
+    left: 80px;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+}
+.wrap-suggestion li {
+    display: block;
+    background: #fff;
+    overflow: hidden;
+    list-style: none;
+    border-bottom: 1px dotted #ccc;
+}
+
+.wrap-suggestion li:last-child {
+    box-sizing: border-box;
+    border-bottom: none;
+}
+.wrap-suggestion li:last-child a{
+    padding: 10px 200px 0px 200px;
+}
+
+
+.wrap-suggestion li a {
+    display: block;
+    overflow: hidden;
+    padding: 6px;
+    color: #999;
+    font-size: 12px;
+}
+
+.wrap-suggestion li a img {
+    float: left;
+    width: 50px;
+    height: auto;
+    margin: 0 6px 0 0;
+}
+.wrap-suggestion li a h3 {
+    display: block;
+    width: auto;
+    color: #333;
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.wrap-suggestion li a h4 {
+    margin-top:10px;
+    font-size:11px;
+}
+.wrap-suggestion li a span.price {
+    font-size: 12px;
+    color: #c70100;
+    float: none;
+}
+
+.box_1{
+    position: fixed;
+    z-index: 9999;
+    top: 30px;
+    right: 20px;
+}
+.total {
+    display: inline-block;
+}
+.qty{
+    width: 22px;
+    height: 22px;
+    background: #91A8E8;
+    border-radius: 50%;
+    display: block;
+    position: absolute;
+    bottom: -3px;
+    left: -1px;
+    color: #fff;
+    font-size:12px;
+    text-align: center;
+    padding-top:3px;
+}
+.fader img {
+    /* Stretching the images to fill whole elements */
+    /* Preventing blank space below the image */
+    line-height: 0;
+
+    /* A one-second transition was to disturbing for me */
+    -webkit-transition: all 0.3s ease;
+    -moz-transition:    all 0.3s ease;
+    -o-transition:      all 0.3s ease;
+    -ms-transition:     all 0.3s ease;
+    transition:         all 0.3s ease; }
+
+.fader img:hover {
+    /* Making images appear bigger and transparent on mouseover */
+    opacity: 0.5;
+    width:   120%;
+}
+
+.checkout-step-bar .step-bar .step2:before{content: '1';}
+.checkout-step-bar .step-bar .step3:before{content: '2';}
+.checkout-step-bar .step-bar .step4:before{content: '3';}
+.checkout-step-bar .step-bar .step5:before{content: '4';}
+
+.checkout-step-bar .step-bar .step2:after{display: none;}
+.checkout-step-bar .step-bar .step.active:after{background-color: #e5101d;}
+.checkout-step-bar .step-bar .step.active:before{background-color: #e5101d;}
+.checkout-step-bar .step-bar .step5:before{right: 0;}
+.checkout-step-bar .step-bar .step span{
+    position: relative;
+    top: 25px;
+    font-size: 11px;
+    color: #313131;
+    line-height: 18px;
+}
+/*.checkout-step-bar .step-bar .step.active span{color: #e5101d;}*/
+.checkout-step-bar .step-bar .step1 span{left: -18px;}
+.checkout-step-bar .step-bar .step2 span{left: -37px;}
+.checkout-step-bar .step-bar .step3 span{left: -38px;}
+.checkout-step-bar .step-bar .step4 span{left: -35px;}
+.checkout-step-bar .step-bar .step5 span{left: -12px;}
