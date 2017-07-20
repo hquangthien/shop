@@ -77,6 +77,10 @@ Route::group(['namespace' => 'Shop', 'middleware' => 'shop.share'], function(){
         return view('shop.error.error');
     })->name('shop.error');
 
+    Route::group(['prefix' => 'huong-dan'], function (){
+        Route::get('dang-ky-mo-shop', 'GuideController@registerShop')->name('shop.guide.registeshop');
+    });
+
 
 });
 
