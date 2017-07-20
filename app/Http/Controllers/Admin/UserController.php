@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\UserEditRequest;
 use App\Http\Requests\UserRequest;
 use App\Model\Role;
+use App\Model\Shop;
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -61,25 +63,49 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        if ($this->user->destroy($id)){
-            return redirect()->route('admin.user.index')->with('msg', 'Xóa tài khoản thành công');
+        $objUser = User::find($id);
+        if ($objUser->role == 1)
+        {
+            Auth::logout();
+            return redirect()->route('login')->with('msg', 'Bạn đã truy cập danh mục ko được phép');
+        }
+        if ($objUser->delete($id)){
+            return redirect()->route('admin.user.index')->with('msg_dlt', 'Xóa tài khoản thành công');
         } else{
-            return redirect()->route('admin.user.index')->with('msg', 'Xóa tài khoản thất bại');
+            return redirect()->route('admin.user.index')->with('msg_dlt', 'Xóa tài khoản thất bại');
         }
     }
 
     public function updateActive($id)
     {
         $objUser = $this->user->find($id);
+        if ($objUser->role == 1)
+        {
+            Auth::logout();
+            return redirect()->route('login')->with('msg', 'Bạn đã truy cập danh mục ko được phép');
+        }
         $active = null;
 
         if ($objUser->active_user == 1)
         {
             $objUser->active_user = 0;
             $active = 0;
+            $objShop = Shop::where('user_id', '=', $id)->first();
+            if (sizeof($objShop) > 0)
+            {
+                $objShop->active_shop = 0;
+                $objShop->save();
+            }
+
         } else{
             $objUser->active_user = 1;
             $active = 1;
+            $objShop = Shop::where('user_id', '=', $id)->first();
+            if (sizeof($objShop) > 0)
+            {
+                $objShop->active_shop = 1;
+                $objShop->save();
+            }
         }
         $objUser->save();
         return response()->json([

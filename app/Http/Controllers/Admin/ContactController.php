@@ -32,9 +32,9 @@ class ContactController extends Controller
     public function delete($id)
     {
         if ($this->contact->destroy($id)){
-            return redirect()->route('admin.contact.index')->with('msg', 'Xóa thành công');
+            return redirect()->route('admin.contact.index')->with('msg_dlt', 'Xóa thành công');
         } else{
-            return redirect()->route('admin.contact.index')->with('msg', 'Xóa thất bại');
+            return redirect()->route('admin.contact.index')->with('msg_dlt', 'Xóa thất bại');
         }
     }
 
@@ -47,7 +47,7 @@ class ContactController extends Controller
             'detail' => $request->detail,
         ];
 
-        Mail::to('hquangthien1@gmail.com', 'Hoàng Quang Thiên')->send(new \App\Mail\Contact($data));
+        Mail::to(''.$data['email'], ''.$data['name'])->send(new \App\Mail\Contact($data));
         return redirect()->route('admin.contact.index')->with('msg', 'Gửi thành công');
     }
 }

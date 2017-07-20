@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class Shop extends Model
 {
     protected $table = 'shops';
-    protected $fillable = ['user_id', 'name', 'phone', 'active_shop', 'website'];
+    protected $fillable = ['user_id', 'name', 'email', 'phone', 'active_shop', 'website'];
 
     public function insertGetId($data){
         return DB::table('shops')
@@ -27,8 +27,8 @@ class Shop extends Model
         return DB::table('shops')
             ->join('users', 'users.id', '=', 'shops.user_id')
             ->leftJoin('bills', 'bills.shop_id', '=', 'shops.id')
-            ->groupBy('users.username', 'shops.id', 'shops.user_id', 'shops.name', 'shops.phone', 'shops.address', 'shops.active_shop', 'shops.website', 'shops.created_at', 'shops.updated_at')
-            ->selectRaw('users.username, shops.id, shops.user_id, shops.name, shops.phone, shops.address, shops.active_shop, shops.website, shops.created_at, shops.updated_at, max(bills.updated_at) as last_activity')
+            ->groupBy('users.username', 'shops.id', 'shops.email', 'shops.user_id', 'shops.name', 'shops.phone', 'shops.address', 'shops.active_shop', 'shops.website', 'shops.created_at', 'shops.updated_at')
+            ->selectRaw('users.username, shops.id, shops.email, shops.user_id, shops.name, shops.phone, shops.address, shops.active_shop, shops.website, shops.created_at, shops.updated_at, max(bills.updated_at) as last_activity')
             ->paginate(10);
     }
 }

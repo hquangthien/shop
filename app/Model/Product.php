@@ -31,7 +31,7 @@ class Product extends Model
                 'products.new', 'products.status', 'products.active_product', 'products.shop_id', 'products.created_at', 'products.updated_at', 'pin')
             ->selectRaw('products.id, products.name, products.cat_id, products.description, products.price, products.promotion_price, 
             products.picture, products.new, products.status, products.active_product, products.shop_id, products.created_at, products.updated_at, products.pin, 
-            count(if(bills.status in (3, 6), 1, 0)) as count_sales')
+            count(if(bills.status in (7, 6), 1, 0)) as count_sales')
             ->paginate(10);
     }
 
@@ -40,7 +40,7 @@ class Product extends Model
         return DB::table('products')
             ->join('shops', 'shops.id', '=', 'products.shop_id')
             ->whereRaw(
-            'products.active_product = 1 and products.status = 1  and
+            'products.active_product = 1 and shops.active_shop = 1 and products.status = 1  and
                 (cat_id in (
                     select categories.id 
                         from categories 
@@ -52,21 +52,19 @@ class Product extends Model
             ->paginate(10);
     }
 
-    public function getProductOfCatOfShop($id, $limit, $shop_id)
+    public function getProductOfCatOfShop($id, $shop_id)
     {
         return DB::table('products')
             ->join('shops', 'shops.id', '=', 'products.shop_id')
             ->whereRaw(
-                'products.shop_id = '.$shop_id.' and products.active_product = 1 and products.status = 1  and
-                (cat_id in (
+                'products.shop_id = 3 and products.active_product = 1 and shops.active_shop = 1 and products.status = 1 and (cat_id in (
                     select categories.id 
                         from categories 
                         where parrent_cat = '.$id.' 
                 ) OR cat_id = '.$id.')'
             )
-            ->orderBy('')
             ->orderBy('created_at', 'DESC')
-            ->selectRaw('products.*, "" as user_id, shops.name as shop_name')
+            ->selectRaw('products.*, shops.name as shop_name')
             ->paginate(10);
     }
 
@@ -75,7 +73,7 @@ class Product extends Model
         return DB::table('products')
             ->join('shops', 'shops.id', '=', 'products.shop_id')
             ->whereRaw(
-                'products.name like "%'.$key_search.'%" and products.active_product = 1 and products.status = 1'
+                'products.name like "%'.$key_search.'%" and products.active_product = 1 and shops.active_shop = 1 and products.status = 1'
             )
             ->orderByRaw('price*(1 - promotion_price/100) ASC')
             ->selectRaw('products.*, shops.name as shop_name')
@@ -100,7 +98,7 @@ class Product extends Model
             ->join('detail_bill', 'detail_bill.product_id', '=', 'products.id')
             ->join('bills', 'detail_bill.bill_id', '=', 'bills.id')
             ->join('shops', 'bills.shop_id', '=', 'shops.id')
-            ->whereRaw('products.active_product = 1 and products.status = 1  and shops.active_shop = 1')
+            ->whereRaw('products.active_product = 1 and shops.active_shop = 1 and products.status = 1  and shops.active_shop = 1')
             ->groupBy('products.id', 'shops.name', 'products.id', 'products.name', 'products.price', 'products.promotion_price', 'products.picture',
                 'products.new', 'products.shop_id')
             ->selectRaw('products.id, "" as user_id, shops.name as shop_name, products.id, products.name, products.price, products.promotion_price, 
@@ -118,7 +116,7 @@ class Product extends Model
             ->join('detail_bill', 'detail_bill.product_id', '=', 'products.id')
             ->join('bills', 'detail_bill.bill_id', '=', 'bills.id')
             ->join('shops', 'bills.shop_id', '=', 'shops.id')
-            ->whereRaw('products.active_product = 1  and shops.active_shop = 1 and products.status = 1 and products.shop_id = '.$shop_id.'')
+            ->whereRaw('products.active_product = 1 and shops.active_shop = 1  and shops.active_shop = 1 and products.status = 1 and products.shop_id = '.$shop_id.'')
             ->groupBy('shops.name', 'products.id', 'products.name', 'products.price', 'products.promotion_price', 'products.picture',
                 'products.new', 'products.shop_id')
             ->selectRaw('"" as user_id, shops.name as shop_name, products.id, products.name, products.price, products.promotion_price, 
@@ -133,7 +131,7 @@ class Product extends Model
     {
         return DB::table('products')
             ->join('shops', 'products.shop_id', '=', 'shops.id')
-            ->whereRaw('products.active_product = 1 and products.status = 1 and shops.active_shop = 1 and products.shop_id = '.$shop_id.'')
+            ->whereRaw('products.active_product = 1 and shops.active_shop = 1 and products.status = 1 and shops.active_shop = 1 and products.shop_id = '.$shop_id.'')
             ->selectRaw('"" as user_id, shops.name as shop_name, products.id, products.name, products.price, products.promotion_price, 
             products.picture, products.new, products.shop_id')
             ->orderBy('products.created_at', 'DESC')
@@ -173,7 +171,7 @@ class Product extends Model
             ->where('products.status', '=', '1')
             ->where('products.active_product', '=', '1')
             ->orderBy('created_at', 'DESC')
-            ->whereRaw('products.status = 1 and products.active_product = 1')
+            ->whereRaw('products.status = 1 and products.active_product = 1 and shops.active_shop = 1')
             ->selectRaw('products.*, shops.name as shop_name')
             ->take(4)
             ->get();
@@ -185,7 +183,7 @@ class Product extends Model
             ->leftJoin('user_product', 'products.id', '=', 'user_product.product_id')
             ->join('shops', 'shops.id', '=', 'products.shop_id')
             ->whereRaw(
-                'products.active_product = 1 and products.status = 1 and user_product.user_id  = '.$user_id
+                'products.active_product = 1 and shops.active_shop = 1 and products.status = 1 and user_product.user_id  = '.$user_id
             )
             ->orderBy('created_at', 'DESC')
             ->selectRaw('products.*, user_product.user_id, shops.name as shop_name')
@@ -199,7 +197,7 @@ class Product extends Model
             ->whereRaw($query)
             ->orderByRaw('price*(1 - promotion_price/100) '.$order)
             ->selectRaw('products.*, shops.name as shop_name')
-            ->paginate(4);
+            ->paginate(8);
     }
 
     public function getPopularProduct()
@@ -218,7 +216,7 @@ class Product extends Model
             ->join('product_tag', 'products.id', '=', 'product_tag.product_id')
             ->join('shops', 'shops.id', '=', 'products.shop_id')
             ->whereRaw(
-                'products.active_product = 1 and products.status = 1 and product_tag.id = '.$tag_id
+                'products.active_product = 1 and shops.active_shop = 1 and products.status = 1 and product_tag.id = '.$tag_id
             )
             ->orderBy('created_at', 'DESC')
             ->selectRaw('products.*, shops.name as shop_name')
@@ -241,7 +239,7 @@ class Product extends Model
         return DB::table('products')
             ->join('shops', 'shops.id', '=', 'products.shop_id')
             ->whereRaw(
-                'products.active_product = 1 and  shops.active_shop = 1 and  products.status = 1 and
+                'products.active_product = 1 and shops.active_shop = 1 and  shops.active_shop = 1 and  products.status = 1 and
                 (cat_id in (
                     select categories.id 
                         from categories 
@@ -287,7 +285,7 @@ class Product extends Model
     {
         return DB::table('products')
             ->join('shops', 'shops.id', '=', 'products.shop_id')
-            ->where('products.id', '=', $id)
+            ->whereRaw('products.id ='.$id.' and shops.active_shop = 1 and products.active_product = 1 and products.status = 1')
             ->selectRaw('products.*, shops.name as shop_name')
             ->get();
     }

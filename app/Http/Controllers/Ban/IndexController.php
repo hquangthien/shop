@@ -29,6 +29,11 @@ class IndexController extends Controller
         $billModel = new Bill();
         $objBill = $billModel->getBillByShopIdAndStatus($objShop->id, 1);
         $objStatus = Status::all();
+        $sumNewBill = sizeof($objBill);
+        if ($sumNewBill != 0)
+        {
+            $objBill = $objBill->chunk(10)[0];
+        }
 
         return view('ban.index.index', [
             'sumProduct' => $sumProduct,
@@ -38,6 +43,7 @@ class IndexController extends Controller
             'sttBills' => $sttBills,
             'sttRevenue' => $sttRevenue,
             'objBill' => $objBill,
+            'sumNewBill' => $sumNewBill,
             'objStatus' => $objStatus,
         ]);
     }

@@ -55,9 +55,9 @@ class ContactController extends Controller
         }
 
         if ($objContact->delete()){
-            return redirect()->route('ban.contact.index')->with('msg', 'Xóa thành công');
+            return redirect()->route('ban.contact.index')->with('msg_dlt', 'Xóa thành công');
         } else{
-            return redirect()->route('ban.contact.index')->with('msg', 'Xóa thất bại');
+            return redirect()->route('ban.contact.index')->with('msg_dlt', 'Xóa thất bại');
         }
     }
 

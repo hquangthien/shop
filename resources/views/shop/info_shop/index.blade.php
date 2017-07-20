@@ -1,4 +1,7 @@
 @extends('templates.shop.master3')
+@section('title')
+    Trang chủ shop | {{ $objShop->name }}
+@endsection
 @section('nvarbar')
     <div class="container">
         <ul class="nav nav-tabs">
@@ -96,8 +99,11 @@
                                 </a>
                             </div>
                             <div class="col-xs-6 pull-right">
-                                <a style="color: #b3afa8; font-size: 13px;" onclick="favoriteHotProduct({{ $product->id }})" href="javascript:void(0)">
-                                    <i id="hotpro_fav_{{ $product->id }}" @if($product->user_id != '')style="color: red"@endif class="fa fa-heart"></i> Yêu thích
+                                <a style="color: #b3afa8; font-size: 13px;"
+                                   onclick="changeActive({{ $product->id }})" href="javascript:void(0)">
+                                    <i id="pro_fav_{{ $product->id }}"
+                                       @if(in_array($product->id, $arFavorite))style="color: red"
+                                       @endif class="fa fa-heart"></i> Yêu thích
                                 </a>
                             </div>
                         </div>
@@ -146,8 +152,11 @@
                                 </a>
                             </div>
                             <div class="col-xs-6 pull-right">
-                                <a style="color: #b3afa8; font-size: 13px;" onclick="changeActive({{ $product->id }})" href="javascript:void(0)">
-                                    <i id="pro_fav_{{ $product->id }}" @if($product->user_id != '')style="color: red"@endif class="fa fa-heart"></i> Yêu thích
+                                <a style="color: #b3afa8; font-size: 13px;"
+                                   onclick="changeActive({{ $product->id }})" href="javascript:void(0)">
+                                    <i id="pro_fav_{{ $product->id }}"
+                                       @if(in_array($product->id, $arFavorite))style="color: red"
+                                       @endif class="fa fa-heart"></i> Yêu thích
                                 </a>
                             </div>
                         </div>

@@ -15,6 +15,9 @@
                         @if(session('msg'))
                             <p class="alert alert-success"> {{ session('msg') }} </p>
                         @endif
+                        @if(session('msg_dlt'))
+                            <p class="alert alert-danger"> {{ session('msg_dlt') }} </p>
+                        @endif
                         <br /><br />
                         <div class="table-responsive">
                             <table class="table m-0 text-center table-bordered">

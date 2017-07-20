@@ -15,6 +15,9 @@
                         @if(session('msg'))
                             <p class="alert alert-success"> {{ session('msg') }} </p>
                         @endif
+                        @if(session('msg_dlt'))
+                            <p class="alert alert-danger"> {{ session('msg_dlt') }} </p>
+                        @endif
                         @if(Auth::user()->role == 1)
                             <a href="{{ route('admin.user.create') }}" class="btn btn-primary">Tạo mới</a>
                         @endif
@@ -28,7 +31,7 @@
                                     <th>Họ tên</th>
                                     <th>Email</th>
                                     <th>Quyền</th>
-                                    @if(/*Auth::user()->role == */1)
+                                    @if(Auth::user()->role == 1)
                                         <th>Tình trạng</th>
                                     @endif
                                     <th>Chức năng</th>
@@ -42,23 +45,31 @@
                                     <td>{{ $userItem->fullname }}</td>
                                     <td>{{ $userItem->email }}</td>
                                     <td>{{ $userItem->name_role }}</td>
-                                    @if(/*Auth::user()->role == */1)
+                                    @if(Auth::user()->role == 1)
                                     <td>
-                                        <a href="javascript:void(0)" onclick="changeActive({{ $userItem->id }})">
-                                        @if($userItem->active_user == 1)
-                                                <img id="user{{ $userItem->id }}" src="{{ $adminUrl }}assets/images/1.gif">
+                                        @if($userItem->role == 1)
+                                            Không thay đổi
                                         @else
-                                            <img id="user{{ $userItem->id }}" src="{{ $adminUrl }}assets/images/0.gif">
+                                            <a href="javascript:void(0)" onclick="changeActive({{ $userItem->id }})">
+                                            @if($userItem->active_user == 1)
+                                                    <img id="user{{ $userItem->id }}" src="{{ $adminUrl }}assets/images/1.gif">
+                                            @else
+                                                <img id="user{{ $userItem->id }}" src="{{ $adminUrl }}assets/images/0.gif">
+                                            @endif
                                         @endif
                                         </a>
                                     </td>
                                     @endif
                                     <td class="actions">
-                                        @if(Auth::user()->role == 1 OR Auth::user()->id == $userItem->id)
-                                        <a href="{{ route('admin.user.edit', ['id' => $userItem->id]) }}" class="on-default edit-row"><i class="fa fa-pencil"></i></a> ||
-                                        <a href="{{ route('admin.user.destroy', ['id' => $userItem->id]) }}" onclick="return confirm('  Bạn có chắc chắn xóa người dùng này?')" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+                                        @if(Auth::user()->role == 1 and $userItem->role == 1)
+                                            <a href="{{ route('admin.user.edit', ['id' => $userItem->id]) }}" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
                                         @else
-                                            No action
+                                            @if(Auth::user()->role == 1 OR Auth::user()->id == $userItem->id)
+                                            <a href="{{ route('admin.user.edit', ['id' => $userItem->id]) }}" class="on-default edit-row"><i class="fa fa-pencil"></i></a> ||
+                                            <a href="{{ route('admin.user.destroy', ['id' => $userItem->id]) }}" onclick="return confirm('  Bạn có chắc chắn xóa người dùng này?')" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+                                            @else
+                                                No action
+                                            @endif
                                         @endif
                                     </td>
                                 </tr>

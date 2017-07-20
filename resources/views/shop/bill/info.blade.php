@@ -1,5 +1,7 @@
 @extends('templates.shop.master')
-
+@section('title')
+    Xác nhận thông tin
+@endsection
 @section('content')
 
     <section id="cart_items">

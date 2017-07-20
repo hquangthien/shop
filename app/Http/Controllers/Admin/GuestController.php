@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\GuestEditRequest;
 use App\Http\Requests\GuestRequest;
+use App\Model\Shop;
 use App\User;
 use App\Http\Controllers\Controller;
 
@@ -76,9 +77,9 @@ class GuestController extends Controller
     public function destroy($id)
     {
         if ($this->user->destroy($id)){
-            return redirect()->route('admin.guest.index')->with('msg', 'Xóa tài khoản thành công');
+            return redirect()->route('admin.guest.index')->with('msg_dlt', 'Xóa tài khoản thành công');
         } else{
-            return redirect()->route('admin.guest.index')->with('msg', 'Xóa tài khoản thất bại');
+            return redirect()->route('admin.guest.index')->with('msg_dlt', 'Xóa tài khoản thất bại');
         }
     }
 
@@ -91,6 +92,13 @@ class GuestController extends Controller
         {
             $objUser->active_user = 0;
             $active = 0;
+            $objShop = Shop::where('user_id', '=', $id)->get();
+            if (sizeof($objShop) > 0)
+            {
+                $objShop->active_shop = 0;
+                $objShop->save();
+            }
+
         } else{
             $objUser->active_user = 1;
             $active = 1;

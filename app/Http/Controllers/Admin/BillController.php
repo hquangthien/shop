@@ -7,7 +7,9 @@ use App\Model\Shop;
 use App\Model\Status;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class BillController extends Controller
 {
@@ -83,20 +85,52 @@ class BillController extends Controller
     public function destroy($id)
     {
         if (Bill::destroy($id)){
-            return redirect()->route('admin.bill.index')->with('msg', 'Xóa thành công');
+            return redirect()->route('admin.bill.index')->with('msg_dlt', 'Xóa thành công');
         } else{
-            return redirect()->route('admin.bill.index')->with('msg', 'Xóa thất bại');
+            return redirect()->route('admin.bill.index')->with('msg_dlt', 'Xóa thất bại');
         }
     }
 
     public function updateStatus($bill_id, $status_id)
     {
         $objBill = Bill::find($bill_id);
+        if ($objBill->status > $status_id)
+        {
+            Auth::logout();
+            return false;
+        }
         $objBill->status = $status_id;
-
         $objBill->save();
+        if ($status_id == 4 || $status_id == 5 || $status_id == 6 ) {
+            $data = [
+                'name' => "E-Shopper",
+                'email' => "hquangthien1@gmail.com",
+                'subject' => "Thông báo hủy đơn hàng #{$objBill->id}",
+                'links' => ''.route('blank.page.bill.detail', ['id' => $bill_id])
+            ];
+            $objShop = Shop::find($objBill->shop_id);
+            switch ($status_id) {
+                case 4:
+                    $data['detail'] = "Đơn hàng #{$objBill->id} đã bị hủy vì không thể liên lạc được với người nhận hoặc quá thời hạn. Chúng tôi sẽ liên lạc để trả lại sản phẩm cho cửa hàng của bạn trong thời gian sớm nhất";
+                    break;
+                case 5:
+                    $data['detail'] = "Đơn hàng #{$objBill->id} đã bị hủy vì người nhận từ chối sản phẩm. Chúng tôi sẽ liên lạc để trả lại sản phẩm cho cửa hàng của bạn trong thời gian sớm nhất";
+                    break;
+                case 6:
+                    $data['subject'] = "Thông báo gửi hàng thành công";
+                    $data['detail'] = "Đơn hàng #{$objBill->id} đã gửi thành công. Chúng tôi sẽ thanh toán tiền hàng cho cửa hàng của bạn trong thời gian sớm nhất";
+                    break;
+            }
+            Mail::to('' . $objShop->email, '' . $objShop->name)->send(new \App\Mail\Notification($data));
+        }
+
+        $nameStatus = Status::where('id', '=', $status_id)->first()->name_status;
+
         return response()->json([
-            'msg'=>'Update thành công !'
+            'msg'=>'Update thành công !',
+            'name_status' => $nameStatus,
+            'id_status' => $status_id
         ]);
     }
+
 }

@@ -49,7 +49,7 @@
                 </li>
 
                 <li class="has_sub">
-                    <a href="{{ route('admin.product.index') }}" class="waves-effect @if(Request::segment(2)== 'news') active @endif"><i class="zmdi zmdi-collection-item"></i><span> Sản phẩm </span> </a>
+                    <a href="{{ route('admin.product.index') }}" class="waves-effect @if(Request::segment(2)== 'product') active @endif"><i class="zmdi zmdi-collection-item"></i><span> Sản phẩm </span> </a>
                 </li>
 
                 <li class="has_sub">

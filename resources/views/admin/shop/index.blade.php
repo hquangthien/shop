@@ -15,6 +15,9 @@
                         @if(session('msg'))
                             <p class="alert alert-success"> {{ session('msg') }} </p>
                         @endif
+                        @if(session('msg_dlt'))
+                            <p class="alert alert-danger"> {{ session('msg_dlt') }} </p>
+                        @endif
                         <br /><br />
                         <div class="table-responsive">
                             <table class="table m-0 text-center table-bordered">
@@ -24,6 +27,7 @@
                                     <th>Tài khoản sở hữu</th>
                                     <th>Tên shop</th>
                                     <th>Địa chỉ</th>
+                                    <th>Email</th>
                                     <th>Tình trạng</th>
                                     <th>Ngày mở</th>
                                     <th>Hoạt động lần cuối</th>
@@ -37,6 +41,7 @@
                                         <td>{{ $shop->username }}</td>
                                         <td>{{ $shop->name }}</td>
                                         <td>{{ $shop->address }}</td>
+                                        <td>{{ $shop->email }}</td>
                                         <td>
                                             <a href="javascript:void(0)" onclick="changeActive({{ $shop->id }})">
                                                 @if($shop->active_shop == 1)
@@ -87,7 +92,7 @@
                     $('#cmt'+id).attr('src', '{{ $adminUrl }}assets/images/'+ data.active +'.gif');
                 },
                 function (error) {
-                    console.log(error);
+
                 }
             );
         }

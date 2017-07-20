@@ -1,9 +1,9 @@
 @extends('templates.ban.master')
 @section('title')
-    Trang quản lý tin tức
+    Trang quản lý sản phẩm
 @endsection
 @section('h1')
-    Trang quản lý tin tức
+    Trang quản lý sản phẩm
 @endsection
 @section('content')
     <div class="content">

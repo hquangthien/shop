@@ -29,7 +29,15 @@
 
 
 <body class="fixed-left">
-
+<div class="se-pre-con"></div>
+<div id="spin"></div>
+<div id="messages-success-alert" class="card-box">
+    <i class="fa fa-info-circle" aria-hidden="true"></i>
+    <span id="message-success-ajax">Thao tác thành công!!!</span>
+</div>
+<div id="messages-error-alert" class="alert alert-danger"><i class="fa fa-info-circle" aria-hidden="true"></i>
+    <span id="message-success-ajax">Thao tác thất bại!!!</span>
+</div>
 <!-- Begin page -->
 <div id="wrapper">
 
@@ -54,18 +62,6 @@
                     </li>
                     <li>
                         <h4 class="page-title">@yield('h1')</h4>
-                    </li>
-                </ul>
-
-                <!-- Right(Notification and Searchbox -->
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="hidden-xs">
-                        <form action="{{ route('admin.news.search') }}" method="POST" role="search" class="app-search">
-                            {{ csrf_field() }}
-                            <input name="key" type="text" placeholder="Search..." value="@if(isset($keySearch)) {{$keySearch}} @endif"
-                                   class="form-control">
-                            <a href=""><i class="fa fa-search"></i></a>
-                        </form>
                     </li>
                 </ul>
 

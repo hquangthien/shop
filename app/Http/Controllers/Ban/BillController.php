@@ -9,6 +9,7 @@ use App\Model\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class BillController extends Controller
 {
@@ -88,27 +89,58 @@ class BillController extends Controller
         }
         if ($objBill->delete())
         {
-            return redirect()->route('ban.bill.index')->with('msg', 'Xóa thành công');
+            return redirect()->route('ban.bill.index')->with('msg_dlt', 'Xóa thành công');
         } else{
-            return redirect()->route('ban.bill.index')->with('msg', 'Có lỗi khi xóa');
+            return redirect()->route('ban.bill.index')->with('msg_dlt', 'Có lỗi khi xóa');
         }
     }
 
     public function updateStatus($bill_id, $status_id)
     {
         $objBill = Bill::find($bill_id);
-        $objBill->status = $status_id;
-
         $shopModel = new Shop();
         $objShop = $shopModel->getShopByUserId(Auth::user()->id)[0];
         if ($objBill->shop_id != $objShop->id)
         {
+            Auth::logout();
             return false;
         }
 
-        $objBill->save();
-        return response()->json([
-            'msg'=>'Update thành công !'
-        ]);
+        if ($status_id == 2 || $status_id == 4)
+        {
+            $data = [
+                'name' => "E-Shopper",
+                'email' => "hquangthien1@gmail.com",
+                'links' => ''.route('blank.page.bill.detail', ['id' => $bill_id])
+            ];
+            $objBill->status = $status_id;
+            switch ($status_id){
+                case 2:
+                    if ($objBill->payment == 1)
+                    {
+                        $objBill->status = 3;
+                    } else{
+                        $objBill->status = 2;
+                    }
+                    $data['subject'] = "Thông báo xác nhận đơn hàng #{$objBill->id}";
+                    $data['detail'] = $objShop->name." đã xác nhận còn hàng đối với đơn hàng #".$objBill->id;
+                    Mail::to('hquangthien1@gmail.com', 'Hoàng Quang Thiên')->send(new \App\Mail\Notification($data));
+                    break;
+                case 4:
+                    $data['subject'] = "Thông báo hủy đơn hàng #{$objBill->id}";
+                    $data['detail'] = "Đơn hàng #{$objBill->id} đã bị hủy vì shop không đáp ứng được sản phẩm đặt hàng. Chúng tôi vô cùng lấy làm tiếc về sự bất tiện này";
+                    Mail::to('' . $objBill->email, '' . $objBill->name)->send(new \App\Mail\Notification($data));
+                    break;
+
+            }
+
+            $objBill->save();
+            $nameStatus = Status::where('id', '=', $objBill->status)->first()->name_status;
+            return response()->json([
+                'msg'=>'Update thành công !',
+                'name_status' => $nameStatus,
+                'id_status' => $objBill->status
+            ]);
+        }
     }
 }

@@ -12,6 +12,11 @@ class IndexController extends Controller
         $sttModel = new Statistic();
 
         $objNewProduct = $sttModel->getNewProduct();
+        $sumNewPro = sizeof($objNewProduct);
+        if ($sumNewPro != 0)
+        {
+            $objNewProduct = $objNewProduct->chunk(10)[0];
+        }
         $countShop = $sttModel->countShop()[0]->count_shop;
         $sumBill = $sttModel->getSumBill()[0]->sum_bill;
         $sumProduct = $sttModel->getSumProduct()[0]->sum_product;
@@ -22,6 +27,7 @@ class IndexController extends Controller
 
         return view('admin.index.index', [
             'objNewProduct' => $objNewProduct,
+            'sumNewPro' => $sumNewPro,
             'countShop' => $countShop,
             'sumBill' => $sumBill,
             'sumProduct' => $sumProduct,

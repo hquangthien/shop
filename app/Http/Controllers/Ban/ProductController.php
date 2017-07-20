@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -166,10 +167,54 @@ class ProductController extends Controller
         }
         Storage::delete('files/'.$objProduct->picture);
         if ($objProduct->delete()){
-            return redirect()->route('ban.product.index')->with('msg', 'Xóa thành công');
+            return redirect()->route('ban.product.index')->with('msg_dlt', 'Xóa thành công');
         } else{
-            return redirect()->route('ban.product.index')->with('msg', 'Xóa thất bại');
+            return redirect()->route('ban.product.index')->with('msg_dlt', 'Xóa thất bại');
         }
+    }
+
+    public function filter(Request $request)
+    {
+        $shopModel = new Shop();
+        $objShop = $shopModel->getShopByUserId(Auth::user()->id)[0];
+        $query = 'products.shop_id = '.$objShop->id;
+
+        if ($request->name_filter != null){
+            $query = $query.' AND products.name like "%'.$request->name_filter.'%"';
+        }
+
+        if ($request->created_at != null){
+            $query = $query.' AND date(products.created_at) = "'.$request->created_at.'"';
+        }
+
+        if ($request->status != null){
+            $query = $query.' AND products.active_product = '.$request->status;
+        }
+
+        $objProduct = DB::table('products')
+            ->leftJoin('detail_bill', 'detail_bill.product_id', '=', 'products.id')
+            ->leftJoin('bills', 'detail_bill.bill_id', '=', 'bills.id')
+            ->whereRaw($query)
+            ->orderBy('products.created_at', 'DESC')
+            ->groupBy('products.id', 'products.name', 'products.cat_id', 'products.description', 'products.price', 'products.promotion_price', 'products.picture',
+                'products.new', 'products.status', 'products.active_product', 'products.shop_id', 'products.created_at', 'products.updated_at', 'pin')
+            ->selectRaw('products.id, products.name, products.cat_id, products.description, products.price, products.promotion_price, 
+            products.picture, products.new, products.status, products.active_product, products.shop_id, products.created_at, products.updated_at, products.pin, 
+            count(if(bills.status in (7, 6), 1, 0)) as count_sales')
+            ->paginate(10);
+        ;
+
+        $querystringArray = ['created_at' => $request->created_at, 'status' => $request->status, 'name_filter' => $request->name_filter];
+
+        $objProduct->appends($querystringArray);
+
+        return view('ban.product.index', [
+            'objProduct' => $objProduct,
+            'date_filter' => $request->created_at,
+            'shop_filter' => $request->shop,
+            'name_filter' => $request->name_filter,
+            'status_filter' => $request->status,
+        ]);
     }
 
     public function updateStatus($product_id, $status)

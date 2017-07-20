@@ -52,6 +52,11 @@ class ProductController extends Controller
     {
         $objShop = Shop::all();
         $query = '1';
+
+        if ($request->name_filter != null){
+            $query = $query.' AND products.name like "%'.$request->name_filter.'%"';
+        }
+
         if ($request->created_at != null){
             $query = $query.' AND date(products.created_at) = "'.$request->created_at.'"';
         }
@@ -70,7 +75,7 @@ class ProductController extends Controller
             ->paginate(10);
         ;
 
-        $querystringArray = ['created_at' => $request->created_at, 'status' => $request->status, 'shop' => $request->shop];
+        $querystringArray = ['created_at' => $request->created_at, 'status' => $request->status, 'shop' => $request->shop, 'name_filter' => $request->name_filter];
 
         $objProduct->appends($querystringArray);
 
@@ -78,6 +83,7 @@ class ProductController extends Controller
             'objProduct' => $objProduct,
             'date_filter' => $request->created_at,
             'shop_filter' => $request->shop,
+            'name_filter' => $request->name_filter,
             'status_filter' => $request->status,
             'objShop' => $objShop
         ]);
@@ -105,9 +111,9 @@ class ProductController extends Controller
     {
         if (Product::destroy($id))
         {
-            return redirect()->route('admin.product.index')->with('msg', 'Xóa thành công');
+            return redirect()->route('admin.product.index')->with('msg_dlt', 'Xóa thành công');
         } else{
-            return redirect()->route('admin.product.index')->with('msg', 'Có lỗi khi xóa');
+            return redirect()->route('admin.product.index')->with('msg_dlt', 'Có lỗi khi xóa');
         }
     }
 }

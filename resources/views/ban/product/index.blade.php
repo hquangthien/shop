@@ -12,10 +12,62 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card-box">
-                        <h4 class="header-title m-t-0 m-b-30">Danh sách tin</h4>
+                        <h4 class="header-title m-t-0 m-b-30">Danh sách sản phẩm</h4>
                         @if(session('msg'))
                             <p class="alert alert-success"> {{ session('msg') }} </p>
                         @endif
+                        @if(session('msg_dlt'))
+                            <p class="alert alert-danger"> {{ session('msg_dlt') }} </p>
+                        @endif
+                        <form action="{{ route('ban.product.filter') }}" method="GET">
+                            <div class="row card-box">
+                                <div class="col-md-4">
+                                    @if(isset($name_filter))
+                                        <input type="text" name="name_filter" class="form-control border-input"
+                                               value="{{ $name_filter }}" placeholder="Tên sản phẩm...">
+                                    @else
+                                        <input type="text" name="name_filter" class="form-control border-input"
+                                               placeholder="Tên sản phẩm...">
+                                    @endif
+                                </div>
+                                <div class="col-md-2">
+                                    @if(isset($date_filter))
+                                        <input type="date" name="created_at" class="form-control border-input"
+                                               value="{{ $date_filter }}" placeholder="Ngày tạo">
+                                    @else
+                                        <input type="date" name="created_at" class="form-control border-input"
+                                               placeholder="Ngày tạo">
+                                    @endif
+                                </div>
+                                <div class="col-md-2">
+                                    <select name="status" class="form-control">
+                                        <option value="{{ null }}">-- Trạng thái --</option>
+                                        <option @if(isset($status_filter))
+                                                @if($status_filter == 2)
+                                                selected
+                                                @endif
+                                                @endif
+                                                value="2">Đang chờ duyệt</option>
+                                        <option @if(isset($status_filter))
+                                                @if($status_filter == 0)
+                                                selected
+                                                @endif
+                                                @endif
+                                                value="0">Vô hiệu</option>
+                                        <option
+                                                @if(isset($status_filter))
+                                                @if($status_filter == 1)
+                                                selected
+                                                @endif
+                                                @endif
+                                                value="1">Đang đăng bán</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="submit" class="btn btn-primary" value="Lọc">
+                                </div>
+                            </div>
+                        </form>
                         <a href="{{ route('ban.product.create') }}" class="btn btn-primary">Tạo mới</a>
                         <br /><br />
                         <div class="table-responsive">
@@ -23,6 +75,7 @@
                                 <thead>
                                 <tr>
                                     <th>ID</th>
+                                    <th>Ngày đăng</th>
                                     <th>TT sản phẩm</th>
                                     <th>Giá gốc</th>
                                     <th>Giảm giá</th>
@@ -37,6 +90,7 @@
                                 @foreach($objProduct as $product)
                                 <tr>
                                     <td>{{ $product->id }}</td>
+                                    <td>{{ $product->created_at }}</td>
                                     <td>
                                         <p>
                                             <a href="{{ route('shop.product.detail', ['slug' => str_slug($product->name), 'id' => $product->id]) }}">{{ $product->name }}</a>
@@ -108,10 +162,8 @@
         function changePromotion(promotion, product_id) {
             updateStatus('product/promotion_product', product_id, promotion,
                 function (data) {
-                    alert('Cập nhật thành công');
                 },
                 function (error) {
-                    alert('Cập nhật thất bại');
                 }
             );
         }
@@ -119,10 +171,9 @@
         function changeStatus(status, product_id) {
             updateStatus('product/status_product', product_id, status,
                 function (data) {
-                    alert('Cập nhật thành công');
                 },
                 function (error) {
-                    alert('Cập nhật thất bại');
+
                 }
             );
         }

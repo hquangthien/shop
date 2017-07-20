@@ -16,6 +16,9 @@
                         @if(session('msg'))
                             <p class="alert alert-success"> {{ session('msg') }} </p>
                         @endif
+                        @if(session('msg_dlt'))
+                            <p class="alert alert-danger"> {{ session('msg_dlt') }} </p>
+                        @endif
                         <a href="{{ route('admin.adv.create') }}" class="btn btn-primary">Tạo mới</a>
                         <br /><br />
                         <div class="table-responsive">
@@ -54,7 +57,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <img width="300" src="{{ Storage::url('app/files/') }}{{ $advItem->image }}" />
+                                        <img width="150" src="{{ Storage::url('app/files/') }}{{ $advItem->image }}" />
                                     </td>
                                     <td class="actions">
                                         <a href="{{ route('admin.adv.edit', ['id' => $advItem->id]) }}" class="on-default edit-row"><i class="fa fa-pencil"></i></a>

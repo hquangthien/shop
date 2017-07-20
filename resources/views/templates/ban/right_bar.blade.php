@@ -21,6 +21,28 @@
 <script src="{{ $adminUrl }}assets/js/jquery.nicescroll.js"></script>
 <script src="{{ $adminUrl }}assets/js/jquery.scrollTo.min.js"></script>
 <script src="{{ $adminUrl }}assets/js/function_custom.js"></script>
+<script src="{{ $adminUrl }}assets/js/jquery.babypaunch.spinner.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#spin").spinner({
+            color: "black"
+            , background: "rgba(255,255,255,0.5)"
+            , html: "<i class='fa fa-repeat' style='color: gray;'></i>"
+            , spin: true
+        });
+    });
+    $(document).ajaxStart(function () {
+        $('#spin').show();
+    });
+    $(document).ajaxSuccess(function () {
+        $('#spin').hide();
+        showAlertSuccess();
+    });
+    $(document).ajaxError(function () {
+        showAlertDanger();
+        $('#spin').hide();
+    });
+</script>
 @yield('js')
 <!-- App js -->
 <script src="{{ $adminUrl }}assets/js/jquery.core.js"></script>

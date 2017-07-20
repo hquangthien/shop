@@ -1,5 +1,7 @@
 @extends('templates.shop.master2')
-
+@section('title')
+    {{ $product->name }}
+@endsection
 @section('content')
     <div class="col-sm-9 padding-right">
         <div class="product-details"><!--product-details-->

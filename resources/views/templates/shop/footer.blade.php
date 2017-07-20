@@ -5,7 +5,8 @@
                 <div class="col-sm-2">
                     <div class="companyinfo">
                         <h2><span>e</span>-shopper</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor</p>
+                        <p>Mua sắm dễ dàng</p>
+                        <p>Bán hàng thuận tiện</p>
                     </div>
                 </div>
                 <div class="col-sm-7">
@@ -15,11 +16,8 @@
                                 <div class="iframe-img">
                                     <img src="{{ $publicUrl }}images/home/iframe1.png" alt="" />
                                 </div>
-                                <div class="overlay-icon">
-                                    <i class="fa fa-play-circle-o"></i>
-                                </div>
                             </a>
-                            <p>Circle of Hands</p>
+                            <p>Hoàng Quang Thiên</p>
                             <h2>24 DEC 2014</h2>
                         </div>
                     </div>
@@ -30,11 +28,8 @@
                                 <div class="iframe-img">
                                     <img src="{{ $publicUrl }}images/home/iframe2.png" alt="" />
                                 </div>
-                                <div class="overlay-icon">
-                                    <i class="fa fa-play-circle-o"></i>
-                                </div>
                             </a>
-                            <p>Circle of Hands</p>
+                            <p>Hoàng Quang Thiên</p>
                             <h2>24 DEC 2014</h2>
                         </div>
                     </div>
@@ -45,11 +40,8 @@
                                 <div class="iframe-img">
                                     <img src="{{ $publicUrl }}images/home/iframe3.png" alt="" />
                                 </div>
-                                <div class="overlay-icon">
-                                    <i class="fa fa-play-circle-o"></i>
-                                </div>
                             </a>
-                            <p>Circle of Hands</p>
+                            <p>Hoàng Quang Thiên</p>
                             <h2>24 DEC 2014</h2>
                         </div>
                     </div>
@@ -60,11 +52,8 @@
                                 <div class="iframe-img">
                                     <img src="{{ $publicUrl }}images/home/iframe4.png" alt="" />
                                 </div>
-                                <div class="overlay-icon">
-                                    <i class="fa fa-play-circle-o"></i>
-                                </div>
                             </a>
-                            <p>Circle of Hands</p>
+                            <p>Hoàng Quang Thiên</p>
                             <h2>24 DEC 2014</h2>
                         </div>
                     </div>
@@ -72,7 +61,7 @@
                 <div class="col-sm-3">
                     <div class="address">
                         <img src="{{ $publicUrl }}images/home/map.png" alt="" />
-                        <p>505 S Atlantic Ave Virginia Beach, VA(Virginia)</p>
+                        <p>183/19 Phan Thanh, Thạc Gián, Thanh Khê, Đà Nẵng</p>
                     </div>
                 </div>
             </div>
@@ -132,11 +121,11 @@
                 </div>
                 <div class="col-sm-3 col-sm-offset-1">
                     <div class="single-widget">
-                        <h2>About Shopper</h2>
-                        <form action="#" class="searchform">
+                        <h2>Thông tin Shopper</h2>
+                        <form action="javascript:void(0)" class="searchform">
                             <input type="text" placeholder="Your email address" />
                             <button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
-                            <p>Get the most recent updates from <br />our site and be updated your self...</p>
+                            <p>Nhận những thông tin cập nhật từ  <br />trang web của chúng tôi...</p>
                         </form>
                     </div>
                 </div>
@@ -166,7 +155,16 @@
 <script src="{{ $adminUrl }}assets/js/function_custom.js"></script>
 <script src="{{ $publicUrl }}js/main.js"></script>
 <script src='{{ $publicUrl }}js/jquery-ui.min.js'></script>
+<script src="{{ $adminUrl }}assets/js/jquery.babypaunch.spinner.min.js"></script>
 <script type="text/javascript">
+    $(document).ready(function () {
+        $("#spin").spinner({
+            color: "black"
+            , background: "rgba(255,255,255,0.5)"
+            , html: "<i class='fa fa-repeat' style='color: gray;'></i>"
+            , spin: true
+        });
+    });
     function changeActive(id) {
         updateActivePublic('favorite', id,
             function (data) {
@@ -174,17 +172,18 @@
             {
                 window.location.replace('{{ route('login') }}');
             } else{
+                showAlertSuccess();
                 if (data.favorite == 1)
                 {
                     $('#pro_fav_'+data.id).css('color', 'red');
-                    alert('Thích thành công');
+
                 } else{
                     $('#pro_fav_'+data.id).css('color', '#b3afa8');
-                    alert('Bỏ thích thành công');
                 }
             }
             },
             function (error) {
+                showAlertDanger();
                 console.log(error);
             }
         );
@@ -197,13 +196,12 @@
                 {
                     window.location.replace('{{ route('login') }}');
                 } else{
+                    showAlertSuccess();
                     if (data.favorite == 1)
                     {
                         $('#hotpro_fav_'+data.id).css('color', 'red');
-                        alert('Thích thành công');
                     } else{
                         $('#hotpro_fav_'+data.id).css('color', '#b3afa8');
-                        alert('Bỏ thích thành công');
                     }
                 }
             },

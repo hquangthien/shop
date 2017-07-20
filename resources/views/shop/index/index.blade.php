@@ -1,4 +1,7 @@
 @extends('templates.shop.master2')
+@section('title')
+    Trang chủ E-shopper | Mua bán trở nên thật dễ dàng
+@endsection
 @section('slider')
     <section id="slider"><!--slider-->
         <div class="container">

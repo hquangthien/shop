@@ -82,9 +82,9 @@ class AdvController extends Controller
         $objAdv = $this->advModel->find($id);
         Storage::delete('files/'.$objAdv->image);
         if ($objAdv->delete()){
-            return redirect()->route('admin.adv.index')->with('msg', 'Xóa thành công');
+            return redirect()->route('admin.adv.index')->with('msg_dlt', 'Xóa thành công');
         } else{
-            return redirect()->route('admin.adv.index')->with('msg', 'Xóa thất bại');
+            return redirect()->route('admin.adv.index')->with('msg_dlt', 'Xóa thất bại');
         }
     }
 

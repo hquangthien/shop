@@ -99,6 +99,38 @@
     top: 30px;
     right: 20px;
 }
+
+#messages-success-alert{
+    padding: 20px 30px;
+    border-radius: 6px;
+    right: 50px;
+    bottom: 50px;
+    z-index:9999;
+    width: 300px;
+    font-size: 16px;
+    background-color: #10c469 !important;
+    color: #f0f0f0;
+    display: none;
+    overflow: hidden;
+    position: fixed;
+}
+
+#messages-error-alert{
+    padding: 20px 30px;
+    border-radius: 6px;
+    right: 50px;
+    bottom: 50px;
+    z-index:9999;
+    width: 300px;
+    font-size: 16px;
+    background-color: #ac2925;
+    color: #f0f0f0;
+    display: none;
+    overflow: hidden;
+    position: fixed;
+
+}
+
 .total {
     display: inline-block;
 }

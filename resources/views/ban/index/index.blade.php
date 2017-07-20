@@ -97,7 +97,7 @@
             </div>
             <div class="row card-box">
                 <div class="col-md-12">
-                    <h4 class="header-title m-t-0">Đơn hàng mới</h4>
+                    <h4 class="header-title m-t-0">Đơn hàng mới (<span id="sum">@if($sumNewBill<10){{ $sumNewBill }}@else 10 @endif</span>/{{ $sumNewBill }} )</h4>
                     <div class="table-responsive">
                         <table class="table m-0 text-center table-bordered">
                             <thead>
@@ -120,7 +120,7 @@
                                 </tr>
                             @else
                                 @foreach($objBill as $bill)
-                                    <tr>
+                                    <tr id="bill_{{ $bill->id }}">
                                         <td>{{ $bill->created_at }}</td>
                                         <td>{{ $bill->name }}</td>
                                         <td>{{ $bill->phone }}</td>
@@ -135,7 +135,7 @@
                                                    class="btn btn-success"><i class="fa fa-bus"></i> Còn hàng
                                                 </a>
                                                 <a href="javascript:void(0)"
-                                                   onclick="changeStatus(5, '{{ $bill->id }}')"
+                                                   onclick="changeStatus(4, '{{ $bill->id }}')"
                                                    class="btn btn-warning"><i class="fa fa-window-close"></i> Hết hàng
                                                 </a>
                                             @else
@@ -197,11 +197,13 @@
         function changeStatus(id, bill_id) {
             updateStatus('bill/status_bill', bill_id, id,
                 function (data) {
-                    alert('Cập nhật thành công!');
-                    location.reload();
+                    $('#sum').text(parseInt($('#sum').text()) - 1);
+                    $('#bill_'+bill_id).fadeOut("slow", function () {
+                        $('#bill_'+bill_id).remove();
+                    });
                 },
                 function (error) {
-                    alert('Có lỗi khi cập nhật');
+
                 }
             );
         }

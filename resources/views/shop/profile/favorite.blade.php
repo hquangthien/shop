@@ -1,4 +1,7 @@
 @extends('templates.shop.master2')
+@section('title')
+    {{ Auth::user()->fullname }} | Sản phẩm yêu thích
+@endsection
 @section('content')
     <div class="col-sm-8">
         <div id="contact-page" class="container">

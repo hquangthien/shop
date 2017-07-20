@@ -17,9 +17,11 @@ class ProductController extends Controller
     public function cat($slug, $id)
     {
         $objCat = Cat::find($id);
-        if (sizeof($objCat) == 0)
-        {
-            return redirect()->route('shop.page.error');
+        if (sizeof($objCat) == 0) {
+            return redirect()->route('shop.error');
+        }
+        if (str_slug($objCat->name) != $slug) {
+            return redirect()->route('shop.product.cat', ['slug' => str_slug($objCat->name), 'id' => $objCat->id]);
         }
         $modelProduct = new Product();
         $objProductOfCat = $modelProduct->getProductOfCatPublic($id, 10);
@@ -33,11 +35,14 @@ class ProductController extends Controller
     public function detail($slug, $id)
     {
         $productModel = new Product();
-        $tagModel = new Tag();
         $product = $productModel->getProductById($id);
-        if (sizeof($product) == 0){
-            return redirect()->route('shop.page.error');
+        if (sizeof($product) == 0) {
+            return redirect()->route('shop.error');
         }
+        if (str_slug($product[0]->name) != $slug) {
+            return redirect()->route('shop.product.detail', ['slug' => str_slug($product[0]->name), 'id' => $product[0]->id]);
+        }
+        $tagModel = new Tag();
 
         $relativeProduct = $productModel->getRelateProduct($id, $product[0]->cat_id);
 
@@ -152,8 +157,10 @@ class ProductController extends Controller
         $modelProduct = new Product();
         $objProductOfCat = $modelProduct->getProOfTag($id);
 
-        return view('shop.product.cat', [
+        $objTag = Tag::find($id);
+        return view('shop.product.tag', [
             'objProduct' => $objProductOfCat,
+            'objTag' => $objTag,
         ]);
     }
 }

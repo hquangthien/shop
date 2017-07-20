@@ -2,7 +2,7 @@
     <p class="alert alert-warning text-center"> Không tìm thấy sản phẩm nào </p>
 @else
     @foreach($objProduct as $product)
-        <div class="col-sm-3">
+        <div class="col-sm-3 notice">
             <div class="product-image-wrapper">
                 <div class="single-products">
                     <div class="productinfo text-center fader iitem">

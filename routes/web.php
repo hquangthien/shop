@@ -46,7 +46,7 @@ Route::group(['namespace' => 'Shop', 'middleware' => 'shop.share'], function(){
     });
 
 
-    Route::get('chi-tiet-hoa-don/{shop_id}/{bill_id}', 'BillController@detailToShow')->name('blank.page.bill.detail');
+    Route::get('chi-tiet-hoa-don-{id}', 'BillController@detailToShow')->name('blank.page.bill.detail');
 
     Route::get('/binh-luan-bai-viet', 'ProductController@comment');
 
@@ -72,6 +72,10 @@ Route::group(['namespace' => 'Shop', 'middleware' => 'shop.share'], function(){
     Route::get('/tim-kiem/', 'SearchController@search')->name('shop.search');
     Route::get('/tim-kiem-ajax/', 'SearchController@searchAjax');
     Route::get('search_filter', 'SearchController@filterSearch');
+
+    Route::get('loi-bat-ngo', function(){
+        return view('shop.error.error');
+    })->name('shop.error');
 
 
 });
@@ -151,7 +155,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'admi
         Route::get('{id}', 'ShopController@destroy')->name('admin.shop.delete');
     });
 
-    Route::post('search', 'NewsController@search')->name('admin.news.search');
+    Route::post('search', 'SearchController@search')->name('admin.search.search');
 
     Route::group(['prefix' => 'guest'], function (){
         Route::get('active_user/{id}', 'GuestController@updateActive');
@@ -193,6 +197,8 @@ Route::group(['namespace' => 'Ban', 'prefix' => 'ban', 'middleware' => 'ban.role
         Route::get('{id}/edit', 'ProductController@edit')->name('ban.product.edit');
         Route::post('{id}/update', 'ProductController@update')->name('ban.product.update');
         Route::get('{id}', 'ProductController@destroy')->name('ban.product.delete');
+
+        Route::get('filter', 'ProductController@filter')->name('ban.product.filter');
     });
 
 
@@ -234,7 +240,7 @@ Route::group(['namespace' => 'Ban', 'prefix' => 'ban', 'middleware' => 'ban.role
     Route::get('/no-roles', 'IndexController@returnError')->name('ban.index.error');
 
 });
-/*** Route Register ***/
+/*** Route Register Shop ***/
 Route::group(['middleware' => 'web'], function () {
     Route::get('ban/dang-ky', 'Ban\RegisterBanController@create')->name('ban.register.create');
     Route::post('ban/dang-ky', 'Ban\RegisterBanController@store')->name('ban.register.store');

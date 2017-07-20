@@ -1,9 +1,9 @@
 @extends('templates.ban.master')
 @section('title')
-    Trang quản lý tin tức
+    Trang quản lý sản phẩm
 @endsection
 @section('h1')
-    Trang quản lý tin tức
+    Trang quản lý sản phẩm
 @endsection
 @section('content')
     <div class="content">
@@ -12,7 +12,7 @@
                 <div class="col-sm-12">
                     <div class="card-box">
 
-                        <h4 class="header-title m-t-0 m-b-30">Thêm sản phẩm</h4>
+                        <h4 class="header-title m-t-0 m-b-30">Cập nhật sản phẩm</h4>
 
                         <div class="row">
                             <div class="col-lg-12">

@@ -25,9 +25,9 @@ class ShopController extends Controller
     {
         if ($this->shopModel->destroy($id))
         {
-            return redirect()->route('admin.shop.index')->with('msg', 'Xóa shop thành công');
+            return redirect()->route('admin.shop.index')->with('msg_dlt', 'Xóa shop thành công');
         } else{
-            return redirect()->route('admin.shop.index')->with('msg', 'Có lỗi khi xóa shop');
+            return redirect()->route('admin.shop.index')->with('msg_dlt', 'Có lỗi khi xóa shop');
         }
     }
 

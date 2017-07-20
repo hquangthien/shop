@@ -1,4 +1,7 @@
 @extends('templates.shop.master2')
+@section('title')
+	Thông tin cá nhân {{ Auth::user()->fullname }}
+@endsection
 @section('content')
 <div class="col-sm-8">
 	<div id="contact-page" class="container">
@@ -9,6 +12,7 @@
 						<h2 class="title text-center">Thông tin cá nhân</h2>
 						<div class="status alert alert-success" style="display: none"></div>
 						<form id="main-contact-form" class="contact-form row" action="{{ route('shop.profile.update', ['slug' => str_slug(Auth::user()->fullname)]) }}" name="contact-form" method="post">
+
 							@if ($errors->any())
 								<div class="alert alert-danger">
 									<ul>
@@ -21,7 +25,7 @@
 							@if(session('msg'))
 								<p class="alert alert-success">{{ session('msg') }}</p>
 							@endif
-							<input type="hidden" name="_token" value="y5mpAlVrZZPuWb8Vgwi512qyboqnekcHMQHZlOZu">
+							{{ csrf_field() }}
 							<div class="form-group col-md-6">
 								<input type="text" name="username" readonly class="form-control" value="{{ Auth::user()->username }}" required="required" placeholder="Username">
 							</div>
@@ -74,7 +78,6 @@
 				$('#confirm_password').prop('disabled', false);
 				$('#password').attr('disabled', false);
 				$('#check').val('on');
-
 			} else{
 				$('#confirm_password').prop('disabled', true);
 				$('#password').attr('disabled', true);

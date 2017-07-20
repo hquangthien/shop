@@ -1,4 +1,7 @@
 @extends('templates.shop.master3')
+@section('title')
+    {{ $objShop->name }} | Đánh giá phản hồi
+@endsection
 @section('nvarbar')
     <div class="container">
         <ul class="nav nav-tabs">

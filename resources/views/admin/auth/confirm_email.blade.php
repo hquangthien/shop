@@ -11,7 +11,7 @@
     <link rel="shortcut icon" href="{{ $adminUrl }}assets/images/favicon.ico">
 
     <!-- App title -->
-    <title>Trang đăng nhập</title>
+    <title>Trang đăng ký</title>
 
     <!-- App CSS -->
     <link href="{{ $adminUrl }}assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />

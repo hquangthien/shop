@@ -16,8 +16,20 @@
                         @if(session('msg'))
                             <p class="alert alert-success"> {{ session('msg') }} </p>
                         @endif
+                        @if(session('msg_dlt'))
+                            <p class="alert alert-danger"> {{ session('msg_dlt') }} </p>
+                        @endif
                         <form action="{{ route('admin.product.filter') }}" method="GET">
                             <div class="row card-box">
+                                <div class="col-md-4">
+                                    @if(isset($name_filter))
+                                        <input type="text" name="name_filter" class="form-control border-input"
+                                               value="{{ $name_filter }}" placeholder="Tên sản phẩm...">
+                                    @else
+                                        <input type="text" name="name_filter" class="form-control border-input"
+                                               placeholder="Tên sản phẩm...">
+                                    @endif
+                                </div>
                                 <div class="col-md-2">
                                     @if(isset($date_filter))
                                         <input type="date" name="created_at" class="form-control border-input"
@@ -52,7 +64,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-2">
-                                    <select name="shop" class="form-control">
+                                    <select name="shop" class="form-control js-example-basic-single">
                                         <option value="{{ null }}">-- Shop --</option>
                                         @if(isset($shop_filter))
                                             @foreach($objShop as $shop)
@@ -148,8 +160,16 @@
 
     </div> <!-- content -->
 @endsection
+@section('css')
+    <link href="{{ $adminUrl }}assets/plugins/select2/dist/css/select2.css" rel="stylesheet" type="text/css">
+    <link href="{{ $adminUrl }}assets/plugins/select2/dist/css/select2-bootstrap.css" rel="stylesheet" type="text/css">
+@endsection
 @section('js')
+    <script src="{{ $adminUrl }}assets/plugins/select2/dist/js/select2.min.js" type="text/javascript"></script>
     <script type="text/javascript">
+        $(document).ready(function() {
+            $(".js-example-basic-single").select2();
+        });
         function changeActive(product_id) {
             updateActive('product/active_product', product_id,
                 function (data) {
@@ -158,10 +178,9 @@
                         '<img id="cmt'+ product_id +'" src="{{ $adminUrl }}assets/images/'+ data.active +'.gif">'+
                         '</a>'
                     );
-                    alert('Cập nhật thành công');
                 },
                 function (error) {
-                    alert('Cập nhật thất bại');
+
                 }
             );
         }
@@ -170,10 +189,10 @@
             updateActive('product/pin_product', product_id,
                 function (data) {
                     $('#pin'+product_id).attr('src', '{{ $adminUrl }}assets/images/'+ data.active +'.gif');
-                    alert('Cập nhật thành công');
+
                 },
                 function (error) {
-                    alert('Cập nhật thất bại');
+
                 }
             );
         }
@@ -186,10 +205,10 @@
                         '<img id="cmt'+ product_id +'" src="{{ $adminUrl }}assets/images/'+ data.active +'.gif">'+
                         '</a>'
                     );
-                    alert('Cập nhật thành công');
+
                 },
                 function (error) {
-                    alert('Cập nhật thất bại');
+
                 }
             );
         }

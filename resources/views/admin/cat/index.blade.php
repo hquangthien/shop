@@ -9,11 +9,14 @@
     <div class="content">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-12">
                     <div class="card-box">
                         <h4 class="header-title m-t-0 m-b-30">Danh sách danh mục sản phẩm</h4>
                         @if(session('msg'))
                             <p class="alert alert-success"> {{ session('msg') }} </p>
+                        @endif
+                        @if(session('msg_dlt'))
+                            <p class="alert alert-danger"> {{ session('msg_dlt') }} </p>
                         @endif
                         @if(Auth::user()->role == 1)
                             <a href="{{ route('admin.cat.create') }}" class="btn btn-primary">Tạo mới</a>
@@ -29,7 +32,7 @@
                                 <tbody>
                                 @foreach($objSuperCat as  $superCat)
                                     <tr>
-                                        <td>{{ $superCat->name }}</td>
+                                        <td><strong>{{ $superCat->name }}</strong></td>
                                         <td class="actions text-center">
                                             @if(Auth::user()->role == 1)
                                                 <a href="{{ route('admin.cat.edit', ['id' => $superCat->id]) }}" class="on-default edit-row"><i class="fa fa-pencil"></i></a> ||

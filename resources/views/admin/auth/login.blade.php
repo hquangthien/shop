@@ -50,6 +50,9 @@
             @if(session('msg'))
                 <p class="alert alert-warning">{{ session('msg') }}</p>
             @endif
+            @if(session('success'))
+                <p class="alert alert-success">{{ session('success') }}</p>
+            @endif
             @if(session('block_user'))
                 <p class="alert alert-danger">{{ session('block_user') }}</p>
                 <?php Session::forget('block_user') ?>

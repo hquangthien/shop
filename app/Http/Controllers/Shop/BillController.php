@@ -241,4 +241,39 @@ class BillController extends Controller
             'total' => $request->session()->get('cart.totalQty')
         ]);
     }
+
+    public function detailToShow($id)
+    {
+        if (!Auth::check())
+        {
+            return redirect()->route('login');
+        } else{
+            $billModel = new Bill();
+            $shopModel = new Shop();
+            $objBill = $billModel->find($id);
+            if (Auth::user()->role != 1 && Auth::user()->role != 2){
+                $objShop = $shopModel->getShopByUserId(Auth::id());
+                if (sizeof($objShop) == 0)
+                {
+                    Auth::logout();
+                    return redirect()->route('login');
+                } elseif ($objShop->id != $objBill->shop_id){
+                    Auth::logout();
+                    return redirect()->route('login');
+                }
+                elseif (Auth::id() != $objBill->user_id){
+                    Auth::logout();
+                    return redirect()->route('login');
+                }
+            }
+            $objShop = $shopModel->find($objBill->shop_id);
+            $objDetail = $billModel->getDetailByBillId($objBill->shop_id, $id);
+
+            return view('shop.bill.detail_bill', [
+                'objShop' => $objShop,
+                'objBill' => $objBill,
+                'objDetail' => $objDetail,
+            ]);
+        }
+    }
 }

@@ -31,6 +31,7 @@ class RegisterBanController extends Controller
         $shopModel->name = $request->name;
         $shopModel->phone = $request->phone;
         $shopModel->address = $request->address;
+        $shopModel->email = Auth::user()->email;
 
         if ($shopModel->save()){
             $shop_id = $shopModel->id;

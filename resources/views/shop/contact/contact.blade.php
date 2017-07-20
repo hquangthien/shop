@@ -1,5 +1,7 @@
 @extends('templates.shop.master')
-
+@section('title')
+    Eshoper | Liên hệ
+@endsection
 @section('content')
     <div id="contact-page" class="container">
         <div class="bg">

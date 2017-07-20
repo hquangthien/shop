@@ -72,9 +72,9 @@ class CatController extends Controller
             } else{
                 $this->catModel->deleteCat($id);
             }
-            return redirect()->route('admin.cat.index')->with('msg', 'Xóa danh mục thành công');
+            return redirect()->route('admin.cat.index')->with('msg_dlt', 'Xóa danh mục thành công');
         } catch (\Exception $exception){
-            return redirect()->route('admin.cat.index')->with('msg', 'Có lỗi xảy ra khi xóa danh mục tin');
+            return redirect()->route('admin.cat.index')->with('msg_dlt', 'Có lỗi xảy ra khi xóa danh mục tin');
         }
     }
 }

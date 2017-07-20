@@ -6,7 +6,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <link rel="shortcut icon" href="{{ $adminUrl }}assets/images/favicon.ico">
-        <title>Home | E-Shopper</title>
+        <title>@yield('title')</title>
         <link href="{{ $publicUrl }}css/bootstrap.min.css" rel="stylesheet">
         <link href="{{ $publicUrl }}css/font-awesome.min.css" rel="stylesheet">
         <link href="{{ $publicUrl }}css/prettyPhoto.css" rel="stylesheet">
@@ -22,6 +22,14 @@
     </head><!--/head-->
 
     <body>
+    <div id="spin"></div>
+    <div id="messages-success-alert" class="card-box">
+        <i class="fa fa-info-circle" aria-hidden="true"></i>
+        <span id="message-success-ajax">Thành công!!!</span>
+    </div>
+    <div id="messages-error-alert" class="alert alert-danger"><i class="fa fa-info-circle" aria-hidden="true"></i>
+        <span id="message-success-ajax">Thất bại!!!</span>
+    </div>
     <div class="box_1" id="shopping-cart">
         <a class="to_cart" href="{{ route('shop.bill.cart') }}">
             <h3> <div class="total">
@@ -86,7 +94,13 @@
                                                         <i class="fa fa-user"></i> Thông tin cá nhân
                                                     </a>
                                                 </li>
-
+                                                @if(Auth::user()->role == 1 || Auth::user()->role == 2)
+                                                    <li>
+                                                        <a href="{{ route('admin.index.index') }}">
+                                                            <i class="fa fa-home"></i> Trang quản trị
+                                                        </a>
+                                                    </li>
+                                                @endif
                                                 <li>
                                                     <a href="{{ route('ban.index.index') }}">
                                                         <i class="fa fa-home"></i> Mở shop

@@ -45,7 +45,7 @@ class Statistic extends Model
     {
         return DB::table('bills')
             ->where('shop_id', '=', $shop_id)
-            ->where('status', '=', 3)
+            ->whereRaw('status in (6, 7)')
             ->selectRaw('count(bills.id) as sum_bill')
             ->get();
     }
@@ -53,7 +53,7 @@ class Statistic extends Model
     public function getSumBill()
     {
         return DB::table('bills')
-            ->where('status', '=', 6)
+            ->where('status', '=', 7)
             ->selectRaw('count(bills.id) as sum_bill')
             ->get();
     }
@@ -103,7 +103,7 @@ class Statistic extends Model
     {
         return DB::table('bills')
             ->where('shop_id', '=', $shop_id)
-            ->where('status', '=', 6)
+            ->whereRaw('status in (6, 7)')
             ->groupBy(DB::raw('date(created_at)'))
             ->selectRaw('date(created_at) as date, sum(bills.total) as total')
             ->get();
@@ -113,7 +113,7 @@ class Statistic extends Model
     {
         return DB::table('bills')
             ->where('status', '=', 6)
-            ->orWhere('status', '=', 3)
+            ->orWhere('status', '=', 7)
             ->groupBy(DB::raw('date(updated_at)'))
             ->selectRaw('date(updated_at) as date, sum(bills.total) as total')
             ->get();

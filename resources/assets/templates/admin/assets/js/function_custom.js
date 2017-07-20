@@ -2,10 +2,19 @@ const DOMAIN = 'http://shop.dev/admin/';
 const DOMAIN_PUBLIC = 'http://shop.dev/';
 const DOMAIN_BAN = 'http://shop.dev/ban/';
 
-function addCommas(nStr)
-{
-    var number = nStr.pả({format:"#,###.00", locale:"us"}, false)
-    alert(number);
+function showAlertSuccess(data) {
+    $("#messages-success-alert").fadeIn("slow", function () {
+        setTimeout(function(){
+            $("#messages-success-alert").fadeOut("slow");
+        }, 4000);
+    });
+}
+function showAlertDanger() {
+    $("#messages-error-alert").fadeIn("slow", function () {
+        setTimeout(function(){
+            $("#messages-error-alert").fadeOut("slow");
+        }, 4000);
+    });
 }
 
 function showItemPublic(url, id, callBackOnSuccess, callBackOnError) {

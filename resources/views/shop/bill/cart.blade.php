@@ -1,5 +1,7 @@
 @extends('templates.shop.master')
-
+@section('title')
+    Giỏ hàng
+@endsection
 @section('content')
     <section id="cart_items">
         <div class="container">
@@ -133,9 +135,11 @@
             if (qty >= 1) {
                 addToCartQty('add_cart_qty', id, qty,
                     function (data) {
+                        showAlertSuccess();
                         $('.qty').html('' + data.total);
                     },
                     function (error) {
+                        showAlertDanger();
                         console.log(error);
                     }
                 );
@@ -143,13 +147,21 @@
         }
 
         function addToCartWithQty(id) {
+            var price = numeral($('#product_price_'+id).text()).value();
+            var current_total = numeral($('#cart_total_'+id).text()).value();
             var qty = $('#product_'+id).val();
+            var total = qty * price;
+            var super_total = numeral($('#super_total').text()).value() - current_total + total;
+            $('#super_total').text(numeral(super_total).format('0,0'));
+            $('#cart_total_'+id).text(numeral(total).format('0,0'));
             if (qty >= 1) {
                 addToCartQty('add_cart_qty', id, qty,
                     function (data) {
+                        showAlertSuccess();
                         $('.qty').html('' + data.total);
                     },
                     function (error) {
+                        showAlertDanger();
                         console.log(error);
                     }
                 );
@@ -159,17 +171,25 @@
         function removeItemInCart(id) {
             updateActivePublic('remove_cart', id,
                 function (data) {
+                    showAlertSuccess();
                     var current_total = numeral($('#cart_total_'+id).text()).value();
                     var super_total = numeral($('#super_total').text()).value() - current_total;
                     $('#super_total').text(numeral(super_total).format('0,0'))
-                    $('#pro_'+id).remove();
-                    $('.qty').html('' + data.total);
+                    $('#pro_'+id).fadeOut("slow", function () {
+                        $('#pro_'+id).remove();
+                    });
+                    if (data.total == null)
+                    {
+                        $('.qty').html(0);
+                    } else{
+                        $('.qty').html('' + data.total);
+                    }
                 },
                 function (error) {
+                    showAlertDanger();
                     console.log(error);
                 }
             );
         }
-        /*alert(numeral('1000.123').format('0,0'));*/
     </script>
 @endsection

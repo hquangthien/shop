@@ -1,5 +1,7 @@
 @extends('templates.shop.master')
-
+@section('title')
+    Đặt hàng
+@endsection
 @section('content')
     {{--{{ dd(Session::all()) }}--}}
     <section id="cart_items">
@@ -109,19 +111,30 @@
 @section('js')
     <script type="text/javascript">
         function getItem(id) {
+            $('#spin').show();
             var removeQty = parseInt($('#qty_pro_'+id).val());
             var totalQty = parseInt($('.qty').text());
             $('.qty').text(totalQty - removeQty);
             showItemPublic('mua-hang/order', id,
                 function (data) {
+                    $('#spin').hide();
+                    showAlertSuccess();
                     $('#detail-bill-modal').html(data);
                     $('#detail-bill-modal').modal('toggle');
                     $('#shop_'+id).remove();
                 },
                 function (error) {
+                    $('#spin').hide();
+                    showAlertDanger();
                     alert('Có lỗi khi cập nhật');
                 }
             );
         }
+        $("#detail-bill-modal").on("hide.bs.modal", function () {
+            if (parseInt($('.qty').text()) == 0)
+            {
+                window.location.replace('{{ route('shop.index.index') }}');
+            }
+        });
     </script>
 @endsection

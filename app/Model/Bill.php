@@ -38,7 +38,7 @@ class Bill extends Model
             ->where('status', '=', $status)
             ->selectRaw('bills.*, status.name_status')
             ->orderBy('bills.created_at', 'DESC')
-            ->paginate(10);
+            ->get();
     }
 
     public function getDetailByBillId($shop_id, $bill_id)

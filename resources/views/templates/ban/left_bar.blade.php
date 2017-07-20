@@ -41,7 +41,7 @@
                 </li>
 
                 <li class="has_sub">
-                    <a href="javascript:void(0)" class="waves-effect @if(Request::segment(2)== 'comment') active @endif"><i class="fa fa-comment"></i><span>Bình luận </span><span class="menu-arrow"></span></a>
+                    <a href="javascript:void(0)" class="waves-effect @if(Request::segment(2)== 'comment') active subdrop @endif"><i class="fa fa-comment"></i><span>Bình luận </span><span class="menu-arrow"></span></a>
                     <ul class="list-unstyled" style="">
                         <li><a href="{{ route('ban.comment.product') }}">Bình luận về sản phẩm</a></li>
                         <li><a href="{{ route('ban.comment.shop') }}">Bình luận về shop</a></li>

@@ -111,6 +111,7 @@
 @section('js')
     <script>
         $(document).on('change', '.filter', function () {
+            $('#spin').show();
             var cat_filter = $('#cat_filter').find(':selected').val();
             var price_filter = $('#price_filter ').find(':selected').val();
             var status_filter = $('#status_filter').find(':selected').val();
@@ -131,14 +132,17 @@
             };
             commentPublic('search_filter', data,
                 function (data) {
+                    $('#spin').hide();
                     $('#list-product').html(data);
                 },
                 function (error) {
+                    $('#spin').hide();
                     console.log(error);
                 }
             );
         });
         function getProduct(key_search, cat_filter, price_filter, status_filter, promotion_filter, page, order_filter) {
+            $('#spin').show();
             data = {
                 key_search: '{{ $key_search }}',
                 cat_filter: cat_filter,
@@ -150,10 +154,12 @@
             };
             commentPublic('search_filter', data,
                 function (data) {
+                    $('#spin').hide();
                     $('.ajax_pagination').remove();
                     $('#list-product').append(data);
                 },
                 function (error) {
+                    $('#spin').hide();
                     console.log(error);
                 }
             );

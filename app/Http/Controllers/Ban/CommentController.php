@@ -31,6 +31,7 @@ class CommentController extends Controller
         $shopModel = new Shop();
         $shop_id = $shopModel->getShopByUserId(Auth::user()->id)[0]->id;
         $objComment = $this->commentModel->getCommentProductOfShop($shop_id);
+        /*dd($objComment);*/
 
         return view('ban.comment.indexProduct', ['objComment' => $objComment]);
     }
@@ -56,9 +57,9 @@ class CommentController extends Controller
         }
         if ($objCmt->delete())
         {
-            return redirect()->route('ban.comment.index')->with('msg', 'Xóa bình luận thành công');
+            return redirect()->route('ban.comment.index')->with('msg_dlt', 'Xóa bình luận thành công');
         } else{
-            return redirect()->route('ban.comment.index')->with('msg', 'Có lỗi khi xóa bình luận');
+            return redirect()->route('ban.comment.index')->with('msg_dlt', 'Có lỗi khi xóa bình luận');
         }
     }
 

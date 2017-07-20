@@ -15,12 +15,16 @@
                         @if(session('msg'))
                             <p class="alert alert-success"> {{ session('msg') }} </p>
                         @endif
+                        @if(session('msg_dlt'))
+                            <p class="alert alert-danger"> {{ session('msg_dlt') }} </p>
+                        @endif
                         <br /><br />
                         <div class="table-responsive">
                             <table class="table m-0 text-center table-bordered">
                                 <thead>
                                 <tr>
                                     <th>ID</th>
+                                    <th>Link</th>
                                     <th>Họ tên</th>
                                     <th>Email</th>
                                     <th>Nội dung</th>
@@ -32,6 +36,11 @@
                                 @foreach($objComment as $commentItem)
                                     <tr>
                                         <th>{{ $commentItem->id }}</th>
+                                        <th>
+                                            <a href="{{ route('shop.product.detail', ['slug' => str_slug($commentItem->name_product), 'id' => $commentItem->product_id]) }}">
+                                                {{ $commentItem->name_product }}
+                                            </a>
+                                        </th>
                                         <td>{{ $commentItem->name_cmt }}</td>
                                         <td>{{ $commentItem->email }}</td>
                                         <td>{{ $commentItem->content }}</td>

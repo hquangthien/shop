@@ -1,9 +1,9 @@
 @extends('templates.ban.master')
 @section('title')
-    Trang quản lý tin tức
+    Trang quản lý đơn hàng
 @endsection
 @section('h1')
-    Trang quản lý tin tức
+    Trang quản lý đơn hàng
 @endsection
 @section('content')
     <div class="content">
@@ -15,6 +15,9 @@
                         <h4 class="header-title m-t-0 m-b-30">Danh sách đơn hàng</h4>
                         @if(session('msg'))
                             <p class="alert alert-success"> {{ session('msg') }} </p>
+                        @endif
+                        @if(session('msg_dlt'))
+                            <p class="alert alert-danger"> {{ session('msg_dlt') }} </p>
                         @endif
                         <form action="{{ route('ban.bill.filter') }}" method="GET">
                             <div class="row card-box">
@@ -58,8 +61,8 @@
                                     <th>Người nhận</th>
                                     <th>Số điện thoại</th>
                                     <th>Địa chỉ</th>
+                                    <th>Email</th>
                                     <th>Tổng tiền</th>
-                                    <th>Chú thích</th>
                                     <th>Tình trạng</th>
                                     <th>Chức năng</th>
                                 </tr>
@@ -71,25 +74,31 @@
                                     </tr>
                                 @else
                                     @foreach($objBill as $bill)
-                                    <tr>
+                                    <tr id="bill_{{ $bill->id }}">
                                         <td>{{ $bill->created_at }}</td>
                                         <td>{{ $bill->name }}</td>
                                         <td>{{ $bill->phone }}</td>
                                         <td>{{ $bill->address }}</td>
+                                        <td>{{ $bill->email }}</td>
                                         <td>{{ number_format($bill->total) }} VND</td>
-                                        <td>{{ $bill->note }}</td>
-                                        <td>
+                                        <td class="bill_status">
                                             @if($bill->status == 1)
                                                 <a href="javascript:void(0)"
                                                    onclick="changeStatus(2, '{{ $bill->id }}')"
                                                    class="btn btn-success"><i class="fa fa-bus"></i> Còn hàng
                                                 </a>
                                                 <a href="javascript:void(0)"
-                                                   onclick="changeStatus(5, '{{ $bill->id }}')"
+                                                   onclick="changeStatus(4, '{{ $bill->id }}')"
                                                    class="btn btn-warning"><i class="fa fa-window-close"></i> Hết hàng
                                                 </a>
                                             @else
-                                                {{ $bill->name_status }}
+                                                @if(in_array($bill->status, [2, 3, 6]))
+                                                    <p class="btn btn-info">{{ $bill->name_status }}</p>
+                                                @elseif(in_array($bill->status, [4, 5]))
+                                                    <p class="btn btn-danger">{{ $bill->name_status }}</p>
+                                                @else
+                                                    <p class="btn btn-success">{{ $bill->name_status }}</p>
+                                                @endif
                                             @endif
                                         </td>
                                         <td>
@@ -135,30 +144,60 @@
         </div>
     </div>
 @endsection
+@section('css')
+    <style>
+        .notice {
+            position:relative;
+            top:20px;
+            opacity:0;
+        }
+
+    </style>
+@endsection
 @section('js')
     <script type="text/javascript">
         function changeStatus(id, bill_id) {
             updateStatus('bill/status_bill', bill_id, id,
                 function (data) {
-                    alert('Cập nhật thành công!');
-                    /*location.reload();*/
+                    switch (data.id_status)
+                    {
+                        case 2:
+                            $('#bill_'+bill_id).find('.bill_status').html('<p class="notice btn btn-info"> '+ data.name_status +' </p>');
+                            break;
+                        case 3:
+                            $('#bill_'+bill_id).find('.bill_status').html('<p class="notice btn btn-info"> '+ data.name_status +' </p>');
+                            break;
+                        case '4':
+                            $('#bill_'+bill_id).find('.bill_status').html('<p class="notice btn btn-danger"> '+ data.name_status +' </p>');
+                            break;
+                    }
+                    $('.notice').animate({opacity: 1, top:0}, 500);
                 },
                 function (error) {
-                    alert('Có lỗi khi cập nhật');
+
                 }
             );
         }
 
         function getItem(id) {
+            $('#messages-success-alert').remove();
             showItem('bill', id,
                 function (data) {
                     $('.modal-body').html(data);
                     $('#detail-bill-modal').modal('toggle');
                 },
                 function (error) {
-                    alert('Có lỗi khi cập nhật');
+
                 }
             );
+            setTimeout(function(){
+                $('#spin').after(
+                    '<div id="messages-success-alert" class="card-box">'+
+                    '<i class="fa fa-info-circle" aria-hidden="true"></i>'+
+                    '<span id="message-success-ajax">Thao tác thành công!!!</span>'+
+                    '</div>'
+                );
+            }, 4000);
         }
     </script>
 @endsection

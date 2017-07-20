@@ -29,8 +29,8 @@ class RegisterController extends Controller
 
 
         Mail::send('admin.auth.blank', ['code' => $codeRand], function ($msg) use ($request){
-            $msg->from('hquangthien1@gmail.com', 'Admin VN Express');
-            $msg->to($request->email, 'Admin VN Express')->subject('Xác nhận email');
+            $msg->from('hquangthien1@gmail.com', 'Admin E-Shopper');
+            $msg->to($request->email, 'Admin E-Shopper')->subject('Xác nhận email');
         });
 
         return view('admin.auth.confirm_email', ['username' => $request->username, 'email' => $request->email]);
@@ -43,7 +43,7 @@ class RegisterController extends Controller
             if ($request->ip() == $arRegisterInfo['ip'] && $request->confirm == $arRegisterInfo['code']){
                 if (User::create($arRegisterInfo['content']))
                 {
-                    return redirect()->route('login')->with('msg', 'Đăng ký thành công');
+                    return redirect()->route('login')->with('success', 'Đăng ký thành công');
                 }
             } else{
                 $request->session()->flash('register_'.$arRegisterInfo['content']['username'], $arRegisterInfo);

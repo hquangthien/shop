@@ -92,7 +92,7 @@
             </div>
             <div class="row card-box">
                 <div class="col-md-12">
-                    <h4 class="header-title m-t-0">Sản phẩm chờ duyệt</h4>
+                    <h4 class="header-title m-t-0">Sản phẩm chờ duyệt (<span id="sum">@if($sumNewPro<10){{ $sumNewPro }}@else 10 @endif</span>/{{ $sumNewPro }} ) </h4>
                     <div class="table-responsive">
                         <table class="table m-0 text-center table-bordered">
                             <thead>
@@ -196,11 +196,13 @@
         function changeActive(product_id) {
             updateActive('product/active_product', product_id,
                 function (data) {
-                    $('#product'+product_id).remove();
-                    alert('Cập nhật thành công');
+                    $('#sum').text(parseInt($('#sum').text()) - 1);
+                    $('#product'+product_id).fadeOut("slow", function () {
+                        $('#product'+product_id).remove();
+                    });
                 },
                 function (error) {
-                    alert('Cập nhật thất bại');
+
                 }
             );
         }
@@ -208,11 +210,11 @@
         function cancelProduct(product_id) {
             updateActive('product/cancel_product', product_id,
                 function (data) {
-                    $('#product'+product_id).remove();
-                    alert('Cập nhật thành công');
+                    $('#sum').text(parseInt($('#sum').text()) - 1);
+                    $('#product'+product_id).fadeOut("slow");
                 },
                 function (error) {
-                    alert('Cập nhật thất bại');
+
                 }
             );
         }
@@ -221,10 +223,9 @@
             updateActive('product/pin_product', product_id,
                 function (data) {
                     $('#pin'+product_id).attr('src', '{{ $adminUrl }}assets/images/'+ data.active +'.gif');
-                    alert('Cập nhật thành công');
                 },
                 function (error) {
-                    alert('Cập nhật thất bại');
+
                 }
             );
         }
